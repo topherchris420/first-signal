@@ -5,7 +5,7 @@ import {
   AlertTriangle, 
   Search, 
   Target, 
-  Mirror, 
+  Reflector, 
   Atom, 
   Activity,
   Rocket
@@ -17,7 +17,7 @@ const modules = [
     title: 'Failure Sandbox',
     description: 'Probabilistic outcome modeling',
     icon: AlertTriangle,
-    status: 'active',
+    status: 'active' as const,
     color: 'red'
   },
   {
@@ -25,7 +25,7 @@ const modules = [
     title: 'Truth Engine',
     description: 'Hypothesis verification',
     icon: Search,
-    status: 'coming-soon',
+    status: 'coming-soon' as const,
     color: 'blue'
   },
   {
@@ -33,15 +33,15 @@ const modules = [
     title: 'Usefulness Meter',
     description: 'Impact × Scale analysis',
     icon: Target,
-    status: 'coming-soon',
+    status: 'coming-soon' as const,
     color: 'green'
   },
   {
     id: 'ego-detector',
     title: 'Ego Dissonance',
     description: 'Distortion analysis',
-    icon: Mirror,
-    status: 'coming-soon',
+    icon: Reflector,
+    status: 'coming-soon' as const,
     color: 'purple'
   },
   {
@@ -49,7 +49,7 @@ const modules = [
     title: 'First Principles',
     description: 'Elemental breakdown',
     icon: Atom,
-    status: 'coming-soon',
+    status: 'coming-soon' as const,
     color: 'yellow'
   },
   {
@@ -57,7 +57,7 @@ const modules = [
     title: 'Action Tracker',
     description: 'Mission-critical habits',
     icon: Activity,
-    status: 'coming-soon',
+    status: 'coming-soon' as const,
     color: 'orange'
   },
   {
@@ -65,7 +65,7 @@ const modules = [
     title: 'Future Shock Node',
     description: 'Long-term relevance',
     icon: Rocket,
-    status: 'coming-soon',
+    status: 'coming-soon' as const,
     color: 'cyan'
   }
 ];
