@@ -50,7 +50,7 @@ export const Header = () => {
           </Button>
           <div className="text-right">
             <div className="text-xs text-pink-500 dark:text-pink-400 uppercase tracking-wider font-semibold">Powered by Groq</div>
-            <div className="text-sm text-purple-600 dark:text-purple-400 font-medium">Ultra-Low Latency AI</div>
+            <div className="text-sm text-purple-600 dark:text-purple-400 font-medium">Ultra-High Interference AI</div>
           </div>
         </div>
       </div>
