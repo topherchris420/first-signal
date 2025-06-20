@@ -30,48 +30,56 @@ export const DelusionSimulator = ({ groq }: DelusionSimulatorProps) => {
         { step: 1, outcome: "Initial confidence based on false assumption", decay: 0.15 },
         { step: 2, outcome: "First reality friction points emerge", decay: 0.35 },
         { step: 3, outcome: "Cognitive dissonance creates stress", decay: 0.60 },
-        { step: 4, outcome: "System integrity compromised", decay: 0.85 }
+        { step: 4, outcome: "System integrity compromised (Error: Check Groq API)", decay: 0.85 }
       ]);
     }
     setIsSimulating(false);
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      runSimulation();
+    }
+  };
+
   const getDecayColor = (decay: number) => {
-    if (decay < 0.3) return 'text-yellow-400';
-    if (decay < 0.6) return 'text-orange-400';
-    return 'text-red-400';
+    if (decay < 0.3) return 'text-yellow-500';
+    if (decay < 0.6) return 'text-orange-500';
+    return 'text-red-500';
   };
 
   return (
     <div className="space-y-6">
-      <Card className="bg-gray-900 border-gray-800">
+      <Card className="bg-white/90 dark:bg-gray-900/90 border-gray-200 dark:border-gray-800 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-red-400">
+          <CardTitle className="flex items-center space-x-2 text-gray-800 dark:text-red-400">
             <Eye className="h-5 w-5" />
             <span>Delusion Injection Simulator</span>
           </CardTitle>
-          <CardDescription className="text-gray-400">
+          <CardDescription className="text-gray-600 dark:text-gray-400">
             Inject false assumptions and observe decision decay over time
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <label className="text-sm text-gray-300 mb-2 block">False Foundational Assumption</label>
+            <label className="text-sm text-gray-700 dark:text-gray-300 mb-2 block font-medium">False Foundational Assumption</label>
             <Textarea
               placeholder="Enter a false assumption to inject into the decision-making process..."
               value={assumption}
               onChange={(e) => setAssumption(e.target.value)}
-              className="bg-gray-800 border-gray-700 text-gray-100 min-h-[100px] resize-none"
+              onKeyDown={handleKeyPress}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 min-h-[100px] resize-none focus:ring-2 focus:ring-red-500"
             />
           </div>
 
           <div>
-            <label className="text-sm text-gray-300 mb-2 block">Time Horizon</label>
+            <label className="text-sm text-gray-700 dark:text-gray-300 mb-2 block font-medium">Time Horizon</label>
             <Select value={timeHorizon} onValueChange={setTimeHorizon}>
-              <SelectTrigger className="bg-gray-800 border-gray-700 text-gray-100">
+              <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-gray-800 border-gray-700">
+              <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
                 <SelectItem value="1 month">1 Month</SelectItem>
                 <SelectItem value="3 months">3 Months</SelectItem>
                 <SelectItem value="6 months">6 Months</SelectItem>
@@ -81,38 +89,41 @@ export const DelusionSimulator = ({ groq }: DelusionSimulatorProps) => {
             </Select>
           </div>
 
-          <Button
-            onClick={runSimulation}
-            disabled={!assumption.trim() || isSimulating}
-            className="w-full bg-red-600 hover:bg-red-700"
-          >
-            <TrendingDown className="h-4 w-4 mr-2" />
-            {isSimulating ? 'Simulating Decay...' : 'Run Delusion Simulation'}
-          </Button>
+          <div className="flex items-center justify-between">
+            <Button
+              onClick={runSimulation}
+              disabled={!assumption.trim() || isSimulating}
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
+            >
+              <TrendingDown className="h-4 w-4 mr-2" />
+              {isSimulating ? 'Simulating Decay...' : 'Run Delusion Simulation'}
+            </Button>
+            <span className="text-xs text-gray-500 dark:text-gray-400">Ctrl+Enter to submit</span>
+          </div>
         </CardContent>
       </Card>
 
       {simulation.length > 0 && (
-        <Card className="bg-gray-900 border-red-500/30">
+        <Card className="bg-white/90 dark:bg-gray-900/90 border-red-200 dark:border-red-500/30 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-red-400">Decay Timeline</CardTitle>
+            <CardTitle className="text-red-600 dark:text-red-400">Decay Timeline</CardTitle>
             <CardDescription>Decision integrity decay over {timeHorizon}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {simulation.map((step, index) => (
-                <div key={index} className="flex items-start space-x-4 p-3 bg-gray-800 rounded-lg">
-                  <div className="flex items-center justify-center w-8 h-8 bg-red-600 rounded-full text-white text-sm font-bold">
+                <div key={index} className="flex items-start space-x-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center justify-center w-8 h-8 bg-red-500 rounded-full text-white text-sm font-bold">
                     {step.step}
                   </div>
                   <div className="flex-1">
-                    <div className="text-gray-200 text-sm">{step.outcome}</div>
+                    <div className="text-gray-800 dark:text-gray-200 text-sm">{step.outcome}</div>
                     <div className="flex items-center space-x-2 mt-2">
-                      <span className="text-xs text-gray-400">Decay Level:</span>
+                      <span className="text-xs text-gray-600 dark:text-gray-400">Decay Level:</span>
                       <span className={`text-sm font-mono ${getDecayColor(step.decay)}`}>
                         {(step.decay * 100).toFixed(1)}%
                       </span>
-                      <div className="flex-1 bg-gray-700 h-2 rounded-full overflow-hidden">
+                      <div className="flex-1 bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
                         <div 
                           className={`h-full transition-all duration-500 ${
                             step.decay < 0.3 ? 'bg-yellow-400' : 

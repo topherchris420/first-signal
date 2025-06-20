@@ -27,66 +27,77 @@ export const TemporalChallenge = ({ groq }: TemporalChallengeProps) => {
       setAnalysis({
         alignment: 0.45,
         obsolescenceRisk: 0.72,
-        scalingGaps: ["Linear thinking patterns", "Human-scale assumptions", "Current-state bias"]
+        scalingGaps: ["Linear thinking patterns", "Human-scale assumptions", "Current-state bias", "Error: Please check your Groq API connection"]
       });
     }
     setIsAnalyzing(false);
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      analyzeDecision();
+    }
+  };
+
   const getAlignmentColor = (score: number) => {
-    if (score > 0.7) return 'text-green-400';
-    if (score > 0.4) return 'text-yellow-400';
-    return 'text-red-400';
+    if (score > 0.7) return 'text-green-500';
+    if (score > 0.4) return 'text-yellow-500';
+    return 'text-red-500';
   };
 
   const getRiskColor = (risk: number) => {
-    if (risk > 0.7) return 'text-red-400';
-    if (risk > 0.4) return 'text-yellow-400';
-    return 'text-green-400';
+    if (risk > 0.7) return 'text-red-500';
+    if (risk > 0.4) return 'text-yellow-500';
+    return 'text-green-500';
   };
 
   return (
     <div className="space-y-6">
-      <Card className="bg-gray-900 border-gray-800">
+      <Card className="bg-white/90 dark:bg-gray-900/90 border-gray-200 dark:border-gray-800 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-yellow-400">
+          <CardTitle className="flex items-center space-x-2 text-gray-800 dark:text-yellow-400">
             <Clock className="h-5 w-5" />
-            <span>Temporal Integrity Challenge</span>
+            <span>Temporal Alignment Challenge</span>
             <Zap className="h-4 w-4" />
           </CardTitle>
-          <CardDescription className="text-gray-400">
+          <CardDescription className="text-gray-600 dark:text-gray-400">
             Test decisions against an AGI-saturated future. Check for obsolescence and scaling gaps.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <label className="text-sm text-gray-300 mb-2 block">Decision or Strategy</label>
+            <label className="text-sm text-gray-700 dark:text-gray-300 mb-2 block font-medium">Decision or Strategy</label>
             <Textarea
               placeholder="Describe a decision, strategy, or plan you're considering..."
               value={decision}
               onChange={(e) => setDecision(e.target.value)}
-              className="bg-gray-800 border-gray-700 text-gray-100 min-h-[120px] resize-none"
+              onKeyDown={handleKeyPress}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 min-h-[120px] resize-none focus:ring-2 focus:ring-yellow-500"
             />
           </div>
 
-          <Button
-            onClick={analyzeDecision}
-            disabled={!decision.trim() || isAnalyzing}
-            className="w-full bg-yellow-600 hover:bg-yellow-700"
-          >
-            <Clock className="h-4 w-4 mr-2" />
-            {isAnalyzing ? 'Analyzing Temporal Alignment...' : 'Run Temporal Analysis'}
-          </Button>
+          <div className="flex items-center justify-between">
+            <Button
+              onClick={analyzeDecision}
+              disabled={!decision.trim() || isAnalyzing}
+              className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white"
+            >
+              <Clock className="h-4 w-4 mr-2" />
+              {isAnalyzing ? 'Analyzing Temporal Alignment...' : 'Run Temporal Analysis'}
+            </Button>
+            <span className="text-xs text-gray-500 dark:text-gray-400">Ctrl+Enter to submit</span>
+          </div>
         </CardContent>
       </Card>
 
       {analysis && (
         <div className="grid gap-4">
           <div className="grid md:grid-cols-2 gap-4">
-            <Card className="bg-gray-900 border-gray-800">
+            <Card className="bg-white/90 dark:bg-gray-900/90 border-gray-200 dark:border-gray-800 backdrop-blur-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center space-x-2">
-                  <TrendingUp className="h-4 w-4 text-green-400" />
+                  <TrendingUp className="h-4 w-4 text-green-500" />
                   <span>Future Alignment</span>
                 </CardTitle>
               </CardHeader>
@@ -95,17 +106,17 @@ export const TemporalChallenge = ({ groq }: TemporalChallengeProps) => {
                   <div className={`text-3xl font-mono ${getAlignmentColor(analysis.alignment)}`}>
                     {(analysis.alignment * 100).toFixed(1)}%
                   </div>
-                  <div className="text-xs text-gray-400 mt-1">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     AGI-era compatibility
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-900 border-gray-800">
+            <Card className="bg-white/90 dark:bg-gray-900/90 border-gray-200 dark:border-gray-800 backdrop-blur-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center space-x-2">
-                  <AlertTriangle className="h-4 w-4 text-orange-400" />
+                  <AlertTriangle className="h-4 w-4 text-orange-500" />
                   <span>Obsolescence Risk</span>
                 </CardTitle>
               </CardHeader>
@@ -114,7 +125,7 @@ export const TemporalChallenge = ({ groq }: TemporalChallengeProps) => {
                   <div className={`text-3xl font-mono ${getRiskColor(analysis.obsolescenceRisk)}`}>
                     {(analysis.obsolescenceRisk * 100).toFixed(1)}%
                   </div>
-                  <div className="text-xs text-gray-400 mt-1">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     Probability of irrelevance
                   </div>
                 </div>
@@ -122,17 +133,17 @@ export const TemporalChallenge = ({ groq }: TemporalChallengeProps) => {
             </Card>
           </div>
 
-          <Card className="bg-gray-900 border-yellow-500/30">
+          <Card className="bg-white/90 dark:bg-gray-900/90 border-yellow-200 dark:border-yellow-500/30 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="text-yellow-400 text-sm">Scaling Gaps Detected</CardTitle>
+              <CardTitle className="text-yellow-600 dark:text-yellow-400 text-sm">Scaling Gaps Detected</CardTitle>
               <CardDescription>Cognitive patterns that won't scale to the future</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 {analysis.scalingGaps.map((gap, index) => (
-                  <div key={index} className="flex items-center space-x-3 p-2 bg-gray-800 rounded">
-                    <AlertTriangle className="h-4 w-4 text-yellow-400 flex-shrink-0" />
-                    <span className="text-sm text-gray-200">{gap}</span>
+                  <div key={index} className="flex items-center space-x-3 p-2 bg-yellow-50 dark:bg-gray-800 rounded border border-yellow-200 dark:border-yellow-500/20">
+                    <AlertTriangle className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-800 dark:text-gray-200">{gap}</span>
                   </div>
                 ))}
               </div>
