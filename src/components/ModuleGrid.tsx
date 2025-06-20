@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { ModuleCard } from './ModuleCard';
 import { 
   AlertTriangle, 
   Search, 
   Target, 
-  Reflector, 
+  Eye, 
   Atom, 
   Activity,
   Rocket
@@ -40,7 +39,7 @@ const modules = [
     id: 'ego-detector',
     title: 'Ego Dissonance',
     description: 'Distortion analysis',
-    icon: Reflector,
+    icon: Eye,
     status: 'coming-soon' as const,
     color: 'purple'
   },
