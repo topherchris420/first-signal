@@ -21,12 +21,19 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
   }, [engine]);
 
   const addNode = () => {
-    if (!decision.trim() || !outcome.trim()) return;
+    console.log('addNode called with:', { decision, outcome, nodeType });
     
+    if (!decision.trim() || !outcome.trim()) {
+      console.log('Form validation failed - missing decision or outcome');
+      return;
+    }
+    
+    console.log('Adding node to engine...');
     engine.addCausalNode(decision, outcome, nodeType);
     setPatterns(engine.getEmergentPatterns());
     setDecision('');
     setOutcome('');
+    console.log('Node added successfully, form cleared');
   };
 
   const getTypeIcon = (type: CausalNode['type']) => {
@@ -48,13 +55,17 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
+    console.log('Key pressed:', e.key, 'Ctrl:', e.ctrlKey, 'Meta:', e.metaKey);
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
+      console.log('Ctrl+Enter detected, calling addNode');
       addNode();
     }
   };
 
   const isFormValid = decision.trim() && outcome.trim();
+
+  console.log('Render state:', { decision, outcome, nodeType, isFormValid });
 
   return (
     <div className="space-y-6">
@@ -75,7 +86,10 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
               <Textarea
                 placeholder="Describe the decision you made..."
                 value={decision}
-                onChange={(e) => setDecision(e.target.value)}
+                onChange={(e) => {
+                  console.log('Decision changed:', e.target.value);
+                  setDecision(e.target.value);
+                }}
                 onKeyDown={handleKeyPress}
                 className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 resize-none focus:ring-2 focus:ring-blue-500"
               />
@@ -85,7 +99,10 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
               <Textarea
                 placeholder="What was the result or outcome..."
                 value={outcome}
-                onChange={(e) => setOutcome(e.target.value)}
+                onChange={(e) => {
+                  console.log('Outcome changed:', e.target.value);
+                  setOutcome(e.target.value);
+                }}
                 onKeyDown={handleKeyPress}
                 className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 resize-none focus:ring-2 focus:ring-blue-500"
               />
@@ -101,7 +118,10 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
                     key={type}
                     variant={nodeType === type ? "default" : "outline"}
                     size="sm"
-                    onClick={() => setNodeType(type)}
+                    onClick={() => {
+                      console.log('Node type changed to:', type);
+                      setNodeType(type);
+                    }}
                     className={`${nodeType === type ? getTypeColor(type) : 'border-gray-300 dark:border-gray-700'}`}
                   >
                     {getTypeIcon(type)}
@@ -113,7 +133,10 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
 
             <div className="flex items-center justify-between">
               <Button
-                onClick={addNode}
+                onClick={() => {
+                  console.log('Submit button clicked');
+                  addNode();
+                }}
                 disabled={!isFormValid}
                 className={`flex items-center space-x-2 px-6 py-2 text-white font-medium rounded-lg transition-all duration-300 ${
                   isFormValid 
