@@ -73,7 +73,7 @@ const modules = [
 export const ModuleGrid = () => {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-gray-200 mb-4">Analysis Modules</h2>
+      <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Analysis Modules</h2>
       <div className="grid gap-3">
         {modules.map((module) => (
           <ModuleCard key={module.id} module={module} />
