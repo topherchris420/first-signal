@@ -63,7 +63,8 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
     }
   };
 
-  const isFormValid = decision.trim() && outcome.trim();
+  // Fixed validation - ensure it returns a proper boolean
+  const isFormValid = Boolean(decision.trim() && outcome.trim());
 
   console.log('Render state:', { decision, outcome, nodeType, isFormValid });
 
@@ -122,10 +123,10 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
                       console.log('Node type changed to:', type);
                       setNodeType(type);
                     }}
-                    className={`${nodeType === type ? getTypeColor(type) : 'border-gray-300 dark:border-gray-700'}`}
+                    className={`flex items-center space-x-1 ${nodeType === type ? getTypeColor(type) : 'border-gray-300 dark:border-gray-700'}`}
                   >
                     {getTypeIcon(type)}
-                    <span className="ml-1 capitalize">{type}</span>
+                    <span className="capitalize">{type}</span>
                   </Button>
                 ))}
               </div>
