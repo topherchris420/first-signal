@@ -1,11 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Brain, Zap, Clock, Eye, Target, GitBranch, Layers } from 'lucide-react';
+import { Brain, Zap, Clock, Eye, Target, Layers } from 'lucide-react';
 import { CognitiveEngine, CausalNode } from '@/lib/cognitiveEngine';
 import { GroqService } from '@/services/groqService';
-import { CausalGraphView } from './CausalGraphView';
 import { RealityCompressionPanel } from './RealityCompressionPanel';
 import { DelusionSimulator } from './DelusionSimulator';
 import { MirrorDialogue } from './MirrorDialogue';
@@ -18,7 +16,7 @@ interface CognitionMatrixProps {
 export const CognitionMatrix = ({ groqApiKey }: CognitionMatrixProps) => {
   const [engine] = useState(() => new CognitiveEngine('user-1'));
   const [groq] = useState(() => new GroqService(groqApiKey));
-  const [activeMode, setActiveMode] = useState<string>('causal');
+  const [activeMode, setActiveMode] = useState<string>('compression');
   const [cognitiveState, setCognitiveState] = useState(engine.getCognitiveState());
 
   useEffect(() => {
@@ -29,7 +27,6 @@ export const CognitionMatrix = ({ groqApiKey }: CognitionMatrixProps) => {
   }, [engine]);
 
   const modes = [
-    { id: 'causal', label: 'Causal Memory', icon: GitBranch, color: 'blue' },
     { id: 'compression', label: 'Reality Compression', icon: Target, color: 'green' },
     { id: 'delusion', label: 'Delusion Injection', icon: Eye, color: 'red' },
     { id: 'mirror', label: 'Mirror Mode', icon: Brain, color: 'purple' },
@@ -39,8 +36,6 @@ export const CognitionMatrix = ({ groqApiKey }: CognitionMatrixProps) => {
 
   const renderActiveMode = () => {
     switch (activeMode) {
-      case 'causal':
-        return <CausalGraphView engine={engine} />;
       case 'compression':
         return <RealityCompressionPanel groq={groq} />;
       case 'delusion':
@@ -52,7 +47,7 @@ export const CognitionMatrix = ({ groqApiKey }: CognitionMatrixProps) => {
       case 'synaptic':
         return <SynapticScoring cognitiveState={cognitiveState} />;
       default:
-        return <CausalGraphView engine={engine} />;
+        return <RealityCompressionPanel groq={groq} />;
     }
   };
 
@@ -74,7 +69,7 @@ export const CognitionMatrix = ({ groqApiKey }: CognitionMatrixProps) => {
       </Card>
 
       {/* Mode Navigation */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
         {modes.map((mode) => {
           const Icon = mode.icon;
           const isActive = activeMode === mode.id;
