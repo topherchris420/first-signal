@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ModuleCard } from './ModuleCard';
 import { 
@@ -24,7 +25,7 @@ const modules = [
     title: 'Truth Engine',
     description: 'Hypothesis verification',
     icon: Search,
-    status: 'coming-soon' as const,
+    status: 'active' as const,
     color: 'blue'
   },
   {
@@ -32,7 +33,7 @@ const modules = [
     title: 'Usefulness Meter',
     description: 'Impact × Scale analysis',
     icon: Target,
-    status: 'coming-soon' as const,
+    status: 'active' as const,
     color: 'green'
   },
   {
@@ -40,7 +41,7 @@ const modules = [
     title: 'Ego Dissonance',
     description: 'Distortion analysis',
     icon: Eye,
-    status: 'coming-soon' as const,
+    status: 'active' as const,
     color: 'purple'
   },
   {
@@ -48,7 +49,7 @@ const modules = [
     title: 'First Principles',
     description: 'Elemental breakdown',
     icon: Atom,
-    status: 'coming-soon' as const,
+    status: 'active' as const,
     color: 'yellow'
   },
   {
@@ -56,7 +57,7 @@ const modules = [
     title: 'Action Tracker',
     description: 'Mission-critical habits',
     icon: Activity,
-    status: 'coming-soon' as const,
+    status: 'active' as const,
     color: 'orange'
   },
   {
@@ -64,7 +65,7 @@ const modules = [
     title: 'Future Shock Node',
     description: 'Long-term relevance',
     icon: Rocket,
-    status: 'coming-soon' as const,
+    status: 'active' as const,
     color: 'cyan'
   }
 ];
