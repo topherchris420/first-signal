@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { GitBranch, Plus, TrendingUp, TrendingDown, Lightbulb, AlertTriangle } from 'lucide-react';
+import { GitBranch, Plus, TrendingUp, TrendingDown, Lightbulb, AlertTriangle, Send } from 'lucide-react';
 import { CognitiveEngine, CausalNode } from '@/lib/cognitiveEngine';
 
 interface CausalGraphViewProps {
@@ -54,6 +54,8 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
     }
   };
 
+  const isFormValid = decision.trim() && outcome.trim();
+
   return (
     <div className="space-y-6">
       <Card className="bg-white/90 dark:bg-gray-900/90 border-gray-200 dark:border-gray-800 backdrop-blur-sm">
@@ -90,29 +92,37 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
             </div>
           </div>
           
-          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <div className="flex flex-wrap gap-2">
-              {(['success', 'failure', 'insight', 'delusion'] as const).map((type) => (
-                <Button
-                  key={type}
-                  variant={nodeType === type ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setNodeType(type)}
-                  className={`${nodeType === type ? getTypeColor(type) : 'border-gray-300 dark:border-gray-700'}`}
-                >
-                  {getTypeIcon(type)}
-                  <span className="ml-1 capitalize">{type}</span>
-                </Button>
-              ))}
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm text-gray-700 dark:text-gray-300 mb-2 block font-medium">Node Type</label>
+              <div className="flex flex-wrap gap-2">
+                {(['success', 'failure', 'insight', 'delusion'] as const).map((type) => (
+                  <Button
+                    key={type}
+                    variant={nodeType === type ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setNodeType(type)}
+                    className={`${nodeType === type ? getTypeColor(type) : 'border-gray-300 dark:border-gray-700'}`}
+                  >
+                    {getTypeIcon(type)}
+                    <span className="ml-1 capitalize">{type}</span>
+                  </Button>
+                ))}
+              </div>
             </div>
-            <div className="flex items-center space-x-3">
+
+            <div className="flex items-center justify-between">
               <Button
                 onClick={addNode}
-                disabled={!decision.trim() || !outcome.trim()}
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+                disabled={!isFormValid}
+                className={`flex items-center space-x-2 px-6 py-2 text-white font-medium rounded-lg transition-all duration-300 ${
+                  isFormValid 
+                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:scale-105' 
+                    : 'bg-gray-400 cursor-not-allowed'
+                }`}
               >
-                <Plus className="h-4 w-4 mr-1" />
-                Add Node
+                <Send className="h-4 w-4" />
+                <span>Submit Node</span>
               </Button>
               <span className="text-xs text-gray-500 dark:text-gray-400">Ctrl+Enter to submit</span>
             </div>
