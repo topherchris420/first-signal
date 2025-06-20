@@ -183,7 +183,7 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
               ))}
             </div>
           </CardContent>
-        </div>
+        </Card>
       )}
     </div>
   );
