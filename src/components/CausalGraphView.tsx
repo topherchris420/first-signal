@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -62,8 +63,14 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
     }
   };
 
-  // Fixed validation - ensure it returns a proper boolean
-  const isFormValid = Boolean(decision.trim() && outcome.trim());
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Form submitted via handleSubmit');
+    addNode();
+  };
+
+  // Simplified form validation
+  const isFormValid = decision.trim().length > 0 && outcome.trim().length > 0;
 
   console.log('Render state:', { decision, outcome, nodeType, isFormValid });
 
@@ -80,76 +87,76 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm text-gray-700 dark:text-gray-300 mb-2 block font-medium">Decision Made</label>
-              <Textarea
-                placeholder="Describe the decision you made..."
-                value={decision}
-                onChange={(e) => {
-                  console.log('Decision changed:', e.target.value);
-                  setDecision(e.target.value);
-                }}
-                onKeyDown={handleKeyPress}
-                className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 resize-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-gray-700 dark:text-gray-300 mb-2 block font-medium">Outcome Observed</label>
-              <Textarea
-                placeholder="What was the result or outcome..."
-                value={outcome}
-                onChange={(e) => {
-                  console.log('Outcome changed:', e.target.value);
-                  setOutcome(e.target.value);
-                }}
-                onKeyDown={handleKeyPress}
-                className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 resize-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm text-gray-700 dark:text-gray-300 mb-2 block font-medium">Node Type</label>
-              <div className="flex flex-wrap gap-2">
-                {(['success', 'failure', 'insight', 'delusion'] as const).map((type) => (
-                  <Button
-                    key={type}
-                    variant={nodeType === type ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => {
-                      console.log('Node type changed to:', type);
-                      setNodeType(type);
-                    }}
-                    className={`flex items-center space-x-1 ${nodeType === type ? getTypeColor(type) : 'border-gray-300 dark:border-gray-700'}`}
-                  >
-                    {getTypeIcon(type)}
-                    <span className="capitalize">{type}</span>
-                  </Button>
-                ))}
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm text-gray-700 dark:text-gray-300 mb-2 block font-medium">Decision Made</label>
+                <Textarea
+                  placeholder="Describe the decision you made..."
+                  value={decision}
+                  onChange={(e) => {
+                    console.log('Decision changed:', e.target.value);
+                    setDecision(e.target.value);
+                  }}
+                  onKeyDown={handleKeyPress}
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 resize-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-gray-700 dark:text-gray-300 mb-2 block font-medium">Outcome Observed</label>
+                <Textarea
+                  placeholder="What was the result or outcome..."
+                  value={outcome}
+                  onChange={(e) => {
+                    console.log('Outcome changed:', e.target.value);
+                    setOutcome(e.target.value);
+                  }}
+                  onKeyDown={handleKeyPress}
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 resize-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
             </div>
+            
+            <div className="space-y-4 mt-4">
+              <div>
+                <label className="text-sm text-gray-700 dark:text-gray-300 mb-2 block font-medium">Node Type</label>
+                <div className="flex flex-wrap gap-2">
+                  {(['success', 'failure', 'insight', 'delusion'] as const).map((type) => (
+                    <Button
+                      key={type}
+                      type="button"
+                      variant={nodeType === type ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => {
+                        console.log('Node type changed to:', type);
+                        setNodeType(type);
+                      }}
+                      className={`flex items-center space-x-1 ${nodeType === type ? getTypeColor(type) : 'border-gray-300 dark:border-gray-700'}`}
+                    >
+                      {getTypeIcon(type)}
+                      <span className="capitalize">{type}</span>
+                    </Button>
+                  ))}
+                </div>
+              </div>
 
-            <div className="flex items-center justify-between">
-              <Button
-                onClick={() => {
-                  console.log('Submit button clicked');
-                  addNode();
-                }}
-                disabled={!isFormValid}
-                className={`flex items-center space-x-2 px-6 py-2 text-white font-medium rounded-lg transition-all duration-300 ${
-                  isFormValid 
-                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:scale-105' 
-                    : 'bg-gray-400 cursor-not-allowed'
-                }`}
-              >
-                <Send className="h-4 w-4" />
-                <span>Submit Node</span>
-              </Button>
-              <span className="text-xs text-gray-500 dark:text-gray-400">Ctrl+Enter to submit</span>
+              <div className="flex items-center justify-between">
+                <Button
+                  type="submit"
+                  disabled={!isFormValid}
+                  className={`flex items-center space-x-2 px-6 py-2 text-white font-medium rounded-lg transition-all duration-300 ${
+                    isFormValid 
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:scale-105' 
+                      : 'bg-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  <Send className="h-4 w-4" />
+                  <span>Submit Node</span>
+                </Button>
+                <span className="text-xs text-gray-500 dark:text-gray-400">Ctrl+Enter to submit</span>
+              </div>
             </div>
-          </div>
+          </form>
         </CardContent>
       </Card>
 
@@ -176,7 +183,7 @@ export const CausalGraphView = ({ engine }: CausalGraphViewProps) => {
               ))}
             </div>
           </CardContent>
-        </Card>
+        </div>
       )}
     </div>
   );
